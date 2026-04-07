@@ -76,28 +76,84 @@ Compare the original modulating signal with the demodulated signal. PROCEDURE
 •	Verify the generated waveform using Tabulation and Model Waveform
 
 Program
+```
+clc;
+clear;
+close all;
 
+Ac = 7.9;          // Carrier amplitude
+Am = 15.8;          // Message amplitude
+Fc = 3060;       // Carrier frequency (Hz)
+Fm = 306;        // Message frequency (Hz)
+Fs = 30600;      // Sampling frequency (Hz)
+
+t = 0:1/Fs:2/Fm; 
+
+// Message signal
+E1 = Am * sin(2*%pi*Fm*t);
+subplot(4,1,1);
+plot(t, E1);
+xlabel("Time (s)");
+ylabel("Amplitude");
+title("Message Signal");
+xgrid();
+
+// Carrier signal
+E2 = Ac * sin(2*%pi*Fc*t);
+subplot(4,1,2);
+plot(t, E2);
+xlabel("Time (s)");
+ylabel("Amplitude");
+title("Carrier Signal");
+xgrid();
+
+// AM modulated signal
+E3 = (Ac + Am*sin(2*%pi*Fm*t)) .* sin(2*%pi*Fc*t);
+subplot(4,1,3);
+plot(t, E3);
+xlabel("Time (s)");
+ylabel("Amplitude");
+title("AM Modulated Signal");
+xgrid();
+
+// Demodulation using Hilbert transform (envelope detection)
+analytic_signal = hilbert(E3);
+envelope = abs(analytic_signal);
+demodulated_signal = envelope - Ac;
+
+subplot(4,1,4);
+plot(t, demodulated_signal);
+xlabel("Time (s)");
+ylabel("Amplitude");
+title("Demodulated Signal");
+xgrid();
+
+```
 
 
 Output Waveform
-
-
-
-
+<img width="1919" height="1199" alt="image" src="https://github.com/user-attachments/assets/930dec16-8576-4d0a-b14d-4cc7a5b58cf1" />
 
 TABULATION:
 
+<img width="479" height="830" alt="image" src="https://github.com/user-attachments/assets/4f6374ab-3aeb-40de-a005-8e2828b88edd" />
 
 
-Calculation
-1.	ma (Theory) = am/ac =
-2.	ma(Practical) = (Emax-Emin)/(Emax+Emin) =
+Calculation:
+
+1.	ma (Theory) = am/ac =0.5
+2.	ma(Practical) = (Emax-Emin)/(Emax+Emin) =0.496
+   
+<img width="486" height="557" alt="image" src="https://github.com/user-attachments/assets/43f0779c-d86c-4396-8395-ec16561bcc7d" />
 
 
-MODEL GRAPH
+
+MODEL GRAPH:
  <img width="919" height="1290" alt="image" src="https://github.com/user-attachments/assets/55326c5b-7dd5-4873-aaf6-d219bb7c4420" />
 
- 
+ RESULT:
+
+ Thus the amplitude modulation and demodulation is experimentally done and the output is verified.
  
 
 
